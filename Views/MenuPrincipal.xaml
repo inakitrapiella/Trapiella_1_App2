@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParcialesMauiTrapiella.Views.MenuPrincipal"
+             xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
+             Title="MenuPrincipal">
+           
+    <ContentPage.BindingContext>
+        <vm:MenuPrincipalViewModels />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="24" Spacing="14">
+        <Label Text="Veterinaria - Menu" FontSize="24" HorizontalOptions="Center"/>
+        <Button Text="Pacientes" Command="{Binding PacientesCommand}"/>
+        <Button Text="Turnos" Command="{Binding TurnosCommand}"/>
+        <Button Text="Cerrar sesion" Command="{Binding CerrarSesionCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParcialesMauiTrapiella.Views.TurnoDetailPage"
+             xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
+             Title="TurnoDetailPage">
+
+    <ContentPage.BindingContext>
+        <vm:TurnoDetailViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+
+            <Label Text="Detalle del turno"
+                   FontAttributes="Bold" FontSize="22"
+                   HorizontalOptions="Center"/>
+          
+            <Label Text="Fecha y hora:" FontAttributes="Bold"/>
+            <Label Text="{Binding Turno.Fecha, StringFormat='{0:dd/MM/yyyy HH:mm}'}"/>
+     
+            <Label Text="Motivo:" FontAttributes="Bold"/>
+            <Label Text="{Binding Turno.Motivo}"/>
+           
+            <Label Text="Estado:" FontAttributes="Bold"/>
+            <Label Text="{Binding Turno.Confirmado, StringFormat='Confirmado: {0}'}"/>
+
+            <Label Text="MascotaId:" FontAttributes="Bold"/>
+            <Label Text="{Binding Turno.MascotaId}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParcialesMauiTrapiella.Views.PacienteDetailPage"
+             xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
+             Title="PacienteDetailPage">
+
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Label Text="{Binding Nombre}" TextColor="Black" FontSize="24" FontAttributes="Bold"/>
+        <Label Text="{Binding Especie}" TextColor="Black" FontSize="18"/>
+        <Label Text="{Binding Raza}" TextColor="Black" FontSize="18"/>
+    </VerticalStackLayout>
+</ContentPage>
