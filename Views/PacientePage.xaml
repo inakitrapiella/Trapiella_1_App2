@@ -13,10 +13,20 @@
         <CollectionView ItemsSource="{Binding Mascotas}" SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="8" ColumnDefinitions="*,Auto">
-                        <Label Text="{Binding Nombre}" FontAttributes="Bold"/>
+                    <Grid Padding="8" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5">
+                        <Label Text="{Binding Nombre}" FontAttributes="Bold" VerticalOptions="Center" />
+
                         <Button Grid.Column="1" Text="Detalle"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SeleccionarCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                        <Button Grid.Column="2" Text="Editar"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditarCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                        <Button Grid.Column="3" Text="Eliminar"
+                                TextColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarCommand}"
                                 CommandParameter="{Binding .}"/>
                     </Grid>
                 </DataTemplate>
