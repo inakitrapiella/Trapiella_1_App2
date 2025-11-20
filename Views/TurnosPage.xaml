@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParcialesMauiTrapiella.Views.TurnoPage"
+             xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
+             Title="TurnoPage">
+
+    <ContentPage.BindingContext>
+        <vm:TurnosViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Button Text="Cargar turnos" Command="{Binding CargarCommand}"/>
+
+        <CollectionView ItemsSource="{Binding Turnos}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="8" ColumnDefinitions="*,Auto">
+                        <Label>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Fecha, StringFormat='{0:dd/MM HH:mm}'}"/>
+                                    <Span Text=" - "/>
+                                    <Span Text="{Binding Motivo}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Grid.Column="1" Text="Ver"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
+                                CommandParameter="{Binding .}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
