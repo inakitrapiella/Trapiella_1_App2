@@ -1,82 +1,80 @@
 ﻿using AppParcialesMauiTrapiella.Models;
-using AppParcialesMauiTrapiella.Services;
-using System;
-using System.Collections.Generic;
+using AppParcialesMauiTrapiella.Repos;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppParcialesMauiTrapiella.ViewsModels
 {
-    public class PacientesViewModel: INotifyPropertyChanged
+    public class PacientesViewModel : INotifyPropertyChanged
     {
-        private readonly ApiService _apiService;
+        private readonly IPacienteRepo _repo;
 
-        private ObservableCollection<Mascota> mascotas;
+        public ObservableCollection<Paciente> Mascotas { get; set; } = new();
 
-        public ObservableCollection<Mascota> Mascotas
+        private bool _cargando;
+        public bool Cargando
         {
-            get => mascotas;
-            set
-            {
-                if (mascotas != value)
-                {
-                    mascotas = value;
-                    OnPropertyChanged(nameof(Mascotas));
-                }
-            }
+            get => _cargando;
+            set { _cargando = value; OnPropertyChanged(); }
         }
 
-        private int mascotaId;
-
-        public int MascotaId
+        private string _estado;
+        public string Estado
         {
-            get => mascotaId;
-            set
-            {
-                if (mascotaId != value)
-                {
-                    mascotaId = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => _estado;
+            set { _estado = value; OnPropertyChanged(); }
         }
 
         public Command CargarCommand { get; }
-        public Command SeleccionarCommand { get; }
+        public Command<Paciente> SeleccionarCommand { get; }
+        public Command<Paciente> EliminarCommand { get; }
+        public Command AgregarCommand { get; }
 
-        public PacientesViewModel(ApiService apiService)
-        {
-            _apiService = apiService;
-            Mascotas = new ObservableCollection<Mascota>();
-            CargarCommand = new Command(async () => await CargarMascotasAsync());
-            SeleccionarCommand = new Command<Mascota>(async (m) => await SeleccionarMascotaAsync(m));
-        }
 
-        private async Task CargarMascotasAsync()
+        public PacientesViewModel(IPacienteRepo repo)
         {
-            try
-            {
-                var lista = await _apiService.GetMascotas();
-                Mascotas = new ObservableCollection<Mascota>(lista);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error!!!!!!!!!" + e.Message);
-            }
+            _repo = repo;
+
+            CargarCommand = new Command(async () => await Cargar());
+            SeleccionarCommand = new Command<Paciente>(async (m) => await VerDetalle(m));
+            EliminarCommand = new Command<Paciente>(async (m) => await Eliminar(m));
+            AgregarCommand = new Command(async () => await Agregar());
 
         }
 
-        private async Task SeleccionarMascotaAsync(Mascota mascota)
+        private async Task Cargar()
         {
-            await Shell.Current.GoToAsync($"PacienteDetailPage?id={mascota.Id}");
+            Cargando = true;
+            Mascotas.Clear();
+
+            var lista = await _repo.GetAllAsync();
+            foreach (var m in lista)
+                Mascotas.Add(m);
+
+            Estado = $"Total: {Mascotas.Count}";
+            Cargando = false;
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private async Task Agregar()
+        {
+            await Shell.Current.GoToAsync("AgregarPacientePage");
+        }
 
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private async Task VerDetalle(Paciente m)
+        {
+            await Shell.Current.GoToAsync($"PacienteDetailPage?id={m.Id}");
+        }
+
+        private async Task Eliminar(Paciente m)
+        {
+            await _repo.DeleteAsync(m);
+            Mascotas.Remove(m);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        void OnPropertyChanged([CallerMemberName] string n = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }
 }

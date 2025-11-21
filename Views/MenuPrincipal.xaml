@@ -4,15 +4,49 @@
              x:Class="AppParcialesMauiTrapiella.Views.MenuPrincipal"
              xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
              Title="MenuPrincipal">
-           
-    <ContentPage.BindingContext>
-        <vm:MenuPrincipalViewModels />
-    </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="24" Spacing="14">
-        <Label Text="Veterinaria - Menu" FontSize="24" HorizontalOptions="Center"/>
-        <Button Text="Pacientes" Command="{Binding PacientesCommand}"/>
-        <Button Text="Turnos" Command="{Binding TurnosCommand}"/>
-        <Button Text="Cerrar sesion" Command="{Binding CerrarSesionCommand}"/>
+    <VerticalStackLayout Padding="24" Spacing="14"
+                         BackgroundColor="#A1E3AD">
+        <Label Text="Veterinaria - Menu" FontSize="24" HorizontalOptions="Center" FontAttributes="Bold"/>
+        
+        <VerticalStackLayout Spacing="10">
+
+            <Button Text="Obtener tu ubicación"
+            Command="{Binding ObtenerUbicacionCommand}"
+            FontSize="16" 
+            BackgroundColor="#056114"/>
+
+            <Label Text="Ubicación actual:"
+           FontAttributes="Bold"/>
+
+            <Label Text="{Binding Ubicacion}"
+           FontSize="16"
+           TextColor="Black"/>
+        </VerticalStackLayout>
+
+
+        <Button 
+            Text="Pacientes" 
+            Command="{Binding PacientesCommand}"
+            FontSize="16"
+            BackgroundColor="#54785B"
+            />
+        
+        <Button 
+            Text="Turnos" 
+            Command="{Binding TurnosCommand}"
+            FontSize="16"
+            BackgroundColor="#54785B"
+            />
+        
+        <Button
+            Text="Cerrar sesion"
+            Command="{Binding CerrarSesionCommand}"
+            FontSize="16"
+            BackgroundColor="Red"
+            FontAttributes="Bold"
+            TextColor="Black"
+            />
+        
     </VerticalStackLayout>
 </ContentPage>

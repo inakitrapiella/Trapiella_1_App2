@@ -5,10 +5,6 @@
              xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
              Title="TurnoDetailPage">
 
-    <ContentPage.BindingContext>
-        <vm:TurnoDetailViewModel />
-    </ContentPage.BindingContext>
-
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
 
@@ -21,12 +17,9 @@
      
             <Label Text="Motivo:" FontAttributes="Bold"/>
             <Label Text="{Binding Turno.Motivo}"/>
-           
-            <Label Text="Estado:" FontAttributes="Bold"/>
-            <Label Text="{Binding Turno.Confirmado, StringFormat='Confirmado: {0}'}"/>
 
             <Label Text="MascotaId:" FontAttributes="Bold"/>
-            <Label Text="{Binding Turno.MascotaId}"/>
+            <Label Text="{Binding Turno.PacienteId}"/>
 
         </VerticalStackLayout>
     </ScrollView>

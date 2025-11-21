@@ -1,76 +1,36 @@
 ﻿using AppParcialesMauiTrapiella.Models;
-using AppParcialesMauiTrapiella.Services;
-using System;
-using System.Collections.Generic;
+using AppParcialesMauiTrapiella.Repos;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppParcialesMauiTrapiella.ViewsModels
 {
-    [QueryProperty(nameof(Id), "id")]
-    public class PacienteDetailViewModel : INotifyPropertyChanged
+    public class PacienteDetailViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private readonly ApiService _apiService;
-        private int _id;
-        private Mascota _mascota;
+        private readonly IPacienteRepo _repo;
 
-        public int Id
+        public Paciente Mascota { get; set; }
+
+        public string Nombre => Mascota?.Nombre;
+        public string Especie => Mascota?.Especie;
+        public string Raza => Mascota?.Raza;
+
+        public PacienteDetailViewModel(IPacienteRepo repo)
         {
-            get => _id;
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    _ = CargarAsync();                  
-                }
-            }
+            _repo = repo;
         }
 
-        public Mascota Mascota
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            get => _mascota;
-            set
-            {
-                if (_mascota != value)
-                {
-                    _mascota = value;
-                    OnPropertyChanged(nameof(Mascota));
-                }
-            }
+            int id = int.Parse(query["id"].ToString());
+            Mascota = await _repo.GetByIdAsync(id);
+            OnPropertyChanged(nameof(Nombre));
+            OnPropertyChanged(nameof(Especie));
+            OnPropertyChanged(nameof(Raza));
         }
 
-        public string Nombre => Mascota?.Nombre ?? "";
-        public string Especie => Mascota?.Especie ?? "";
-        public string Raza => Mascota?.Raza ?? "";
-
-        public PacienteDetailViewModel(ApiService apiService)
-        {
-            _apiService = apiService;
-        }
-
-        private async Task CargarAsync()
-        {
-            try
-            {
-                var m = await _apiService.GetMascotaId(Id);
-                Mascota = m;
-                OnPropertyChanged(nameof(Nombre));
-                OnPropertyChanged(nameof(Especie));
-                OnPropertyChanged(nameof(Raza));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public event PropertyChangedEventHandler PropertyChanged;
+        void OnPropertyChanged([CallerMemberName] string p = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
     }
 }

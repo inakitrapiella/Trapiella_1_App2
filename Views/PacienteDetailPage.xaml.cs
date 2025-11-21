@@ -5,10 +5,9 @@ namespace AppParcialesMauiTrapiella.Views;
 
 public partial class PacienteDetailPage : ContentPage
 {
-	public PacienteDetailPage()
+	public PacienteDetailPage(PacienteDetailViewModel viewModel)
 	{
 		InitializeComponent();
-		var api = new ApiService(new HttpClient());
-        BindingContext = new PacienteDetailViewModel(api);
+        BindingContext = viewModel;
 	}
 }

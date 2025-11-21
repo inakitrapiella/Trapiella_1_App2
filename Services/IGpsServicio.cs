@@ -1,5 +1,4 @@
-﻿using AppParcialesMauiTrapiella.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppParcialesMauiTrapiella.Services
 {
-    public interface IApiService
+    public interface IGpsServicio
     {
-       Task<IReadOnlyList<Paciente>> GetMascotas();
+        Task<(double lat, double lon)> ObtenerUbicacionAsync();
     }
 }

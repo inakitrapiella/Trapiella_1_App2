@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppParcialesMauiTrapiella.Views.RegistroPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Registro">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="15"
+                             BackgroundColor="#C5DBC9">
+
+            <Label Text="Crear cuenta"
+                   FontSize="28"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"/>
+
+            <Entry Placeholder="Email"
+                   Keyboard="Email"
+                   TextColor="Black"
+                    FontSize="16"
+                    PlaceholderColor="Black"
+                   Text="{Binding Email}" />
+
+            <Entry Placeholder="Contraseña"
+                   IsPassword="True"
+                   TextColor="Black"
+                   FontSize="16"
+                    PlaceholderColor="Black"
+                   Text="{Binding Password}" />
+
+            <Entry Placeholder="Repetir contraseña"
+                   IsPassword="True"
+                   TextColor="Black"
+                   FontSize="16"
+                   PlaceholderColor="Black"
+                   Text="{Binding RepetirPassword}" />
+
+            <Label Text="{Binding Mensaje}"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   FontSize="14"/>
+
+            <Button Text="Registrarse"
+                    Command="{Binding RegistrarCommand}"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="8"
+                    FontAttributes="Bold"/>
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="Blue"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    CornerRadius="8"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
