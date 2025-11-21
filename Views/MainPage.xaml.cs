@@ -1,6 +1,6 @@
 ﻿using AppParcialesMauiTrapiella.ViewsModels;
 
-namespace AppParcialesMauiTrapiella
+namespace AppParcialesMauiTrapiella.Views
 {
     public partial class MainPage : ContentPage
     {
