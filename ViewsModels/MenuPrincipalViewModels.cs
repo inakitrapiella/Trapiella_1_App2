@@ -1,38 +1,63 @@
-﻿using Microsoft.Maui.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppParcialesMauiTrapiella.Repos;
+using AppParcialesMauiTrapiella.Services;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace AppParcialesMauiTrapiella.ViewsModels
 {
-    public class MenuPrincipalViewModels
+    public class MenuPrincipalViewModels : INotifyPropertyChanged
     {
-        public Command PacientesCommand { get; }
-        public Command TurnosCommand { get; }
-        public Command CerrarSesionCommand { get; }
+        private readonly IGpsServicio _gpsServicio;
 
-        public MenuPrincipalViewModels()
+        private string ubicacion;
+        public string Ubicacion
         {
-            PacientesCommand = new Command(async () => await PacientesAsync());
-            TurnosCommand = new Command(async () => await TurnosAsync());
-            CerrarSesionCommand = new Command(async () => await CerrarSesionAsync());
+            get => ubicacion;
+            set { ubicacion = value; OnPropertyChanged(); }
         }
 
-        private async Task PacientesAsync()
+        public Command ObtenerUbicacionCommand { get; }
+
+        public ICommand PacientesCommand { get; }
+        public ICommand TurnosCommand { get; }
+        public ICommand CerrarSesionCommand { get; }
+
+        public MenuPrincipalViewModels(IGpsServicio gpsServicio)
         {
-            await Shell.Current.GoToAsync(nameof(Views.PacientePage));
+            _gpsServicio = gpsServicio;
+            ObtenerUbicacionCommand = new Command(async () => await ObtenerUbicacion());
+
+            PacientesCommand = new Command(async () =>
+                await Shell.Current.GoToAsync(nameof(AppParcialesMauiTrapiella.Views.PacientePage)));
+
+            TurnosCommand = new Command(async () =>
+                await Shell.Current.GoToAsync(nameof(AppParcialesMauiTrapiella.Views.TurnoPage)));
+
+            CerrarSesionCommand = new Command(async () =>
+                await Shell.Current.GoToAsync("///MainPage"));
         }
 
-        private async Task TurnosAsync()
+        private async Task ObtenerUbicacion()
         {
-            await Shell.Current.GoToAsync(nameof(Views.TurnoPage));
+            try
+            {
+                var (lat, lon) = await _gpsServicio.ObtenerUbicacionAsync();
+                Ubicacion = $"Lat: {lat:0.0000}  |  Lon: {lon:0.0000}";
+            }
+            catch (Exception ex)
+            {
+                Ubicacion = "Error obteniendo ubicacion";
+
+                Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(200));
+
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
-        private async Task CerrarSesionAsync()
-        {
-            await Shell.Current.GoToAsync("//MainPage");
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
+
 }

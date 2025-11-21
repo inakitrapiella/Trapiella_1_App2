@@ -1,4 +1,5 @@
-﻿using AppParcialesMauiTrapiella.Services;
+﻿using AppParcialesMauiTrapiella.Repos;
+using AppParcialesMauiTrapiella.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -7,7 +8,8 @@ namespace AppParcialesMauiTrapiella.ViewsModels
 {
     public class MainPageViewModels : INotifyPropertyChanged
     {
-        private readonly IValidacionServicio _validacionServicio;
+        private readonly IUsuarioRepo _usuarioRepo;
+        private readonly ISincronizacionServicio _sincronizacionServicio;
 
         private string _username;
         private string _password;
@@ -46,12 +48,15 @@ namespace AppParcialesMauiTrapiella.ViewsModels
         }
 
         public ICommand LoginCommand { get; }
+        public ICommand IrARegistroCommand { get; }
 
-        public MainPageViewModels(IValidacionServicio validacionServicio)
+        public MainPageViewModels(IUsuarioRepo usuarioRepo, ISincronizacionServicio sincronizacionServicio)
         {
-            _validacionServicio = validacionServicio;
-
+            _usuarioRepo = usuarioRepo;
+            _sincronizacionServicio = sincronizacionServicio;
+            _ = _sincronizacionServicio.SincronizarPacientesAsync();
             LoginCommand = new Command(async () => await LoginAsync());
+            IrARegistroCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(AppParcialesMauiTrapiella.Views.RegistroPage)));
         }
 
         private async Task LoginAsync()
@@ -59,17 +64,17 @@ namespace AppParcialesMauiTrapiella.ViewsModels
             HasError = false;
             ErrorMessage = string.Empty;
 
-            if (!_validacionServicio.IsValid(Username))
+            if (string.IsNullOrWhiteSpace(Username))
             {
-                ErrorMessage = "El usuario no puede estar vacio.";
                 HasError = true;
+                ErrorMessage = "Ingrese su email.";
                 return;
             }
 
-            if (!_validacionServicio.IsValidPassword(Password))
+            if (string.IsNullOrWhiteSpace(Password))
             {
-                ErrorMessage = "La contraseña debe tener al menos 6 caracteres, incluyendo letras y numeros.";
                 HasError = true;
+                ErrorMessage = "Ingrese su contraseña.";
                 return;
             }
 
@@ -77,14 +82,16 @@ namespace AppParcialesMauiTrapiella.ViewsModels
             {
                 IsBusy = true;
 
-                await Task.Delay(1000);
+                var user = await _usuarioRepo.GetByMailAsync(Username);
+
+                if (user == null || user.Contrasena != Password)
+                {
+                    HasError = true;
+                    ErrorMessage = "Usuario o contraseña incorrectos.";
+                    return;
+                }
 
                 await Shell.Current.GoToAsync(nameof(AppParcialesMauiTrapiella.Views.MenuPrincipal));
-            }
-            catch (Exception ex)
-            {
-                HasError = true;
-                ErrorMessage = $"Error al iniciar sesion: {ex.Message}";
             }
             finally
             {
@@ -93,10 +100,7 @@ namespace AppParcialesMauiTrapiella.ViewsModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
