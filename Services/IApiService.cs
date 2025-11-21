@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace AppParcialesMauiTrapiella.Services
 {
-    interface IApiService
+    public interface IApiService
     {
-       Task<IReadOnlyList<Mascota>> GetMascotas();
-       Task<Mascota> GetMascotaId(int Id);
+       Task<IReadOnlyList<Paciente>> GetMascotas();
     }
 }
