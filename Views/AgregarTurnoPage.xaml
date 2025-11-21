@@ -1,0 +1,40 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppParcialesMauiTrapiella.Views.AgregarTurnoPage"
+             Title="Nuevo Turno">
+
+    <VerticalStackLayout Padding="20" Spacing="12"
+                         BackgroundColor="#A1E3AD">
+
+        <DatePicker Date="{Binding Fecha}" 
+               TextColor="Black"
+               FontSize="16"/>
+
+        <Picker Title="Seleccione un paciente"
+                TextColor="Black"
+                FontSize="16"
+                ItemsSource="{Binding Pacientes}"
+                ItemDisplayBinding="{Binding Nombre}"
+                SelectedItem="{Binding PacienteSeleccionado}" />
+
+        <Entry Placeholder="Motivo" Text="{Binding Motivo}"               
+               PlaceholderColor="Black"
+               TextColor="Black"
+               FontSize="16"/>
+
+        <Button Text="Guardar"
+                BackgroundColor="Blue"
+                FontAttributes="Bold"
+                FontSize="16"
+                TextColor="White"
+                Command="{Binding GuardarCommand}" />
+
+        <Button Text="Cancelar"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="16"
+                TextColor="Black"
+                Command="{Binding CancelarCommand}" />
+
+    </VerticalStackLayout>
+</ContentPage>
