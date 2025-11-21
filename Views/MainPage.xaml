@@ -1,25 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppParcialesMauiTrapiella.MainPage"
+             x:Class="AppParcialesMauiTrapiella.Views.MainPage"
              Title="Veterinaria - Ingreso">
 
+    <VerticalStackLayout Padding="24" Spacing="15"
+                         BackgroundColor="#C5DBC9">
 
+        <Label Text="Inicio de sesión"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
 
-    <VerticalStackLayout Padding="24" Spacing="12">
-        <Label Text="Inicio de sesión" FontSize="22" HorizontalOptions="Center"/>
-
-        <Entry Placeholder="Usuario"
+        <Entry Placeholder="Email"
+               TextColor="Black"
+               FontSize="16"
+               PlaceholderColor="Black"
                Text="{Binding Username}" />
 
         <Entry Placeholder="Contraseña"
+                PlaceholderColor="Black"
                IsPassword="True"
+               FontSize="16"
+               TextColor="Black"
                Text="{Binding Password}" />
 
         <Button Text="Ingresar"
-                Command="{Binding LoginCommand}" />
+                TextColor="White"
+                BackgroundColor="#4CAF50"
+                FontSize="16"
+                Command="{Binding LoginCommand}"
+                FontAttributes="Bold"/>
 
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
+        <Button Text="Registrarse"
+                Command="{Binding IrARegistroCommand}"
+                BackgroundColor="Blue"
+                TextColor="White"
+                FontAttributes="Bold"/>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
+
+        <Label Text="{Binding ErrorMessage}"
+               TextColor="Red"
+               IsVisible="{Binding HasError}" />
+
     </VerticalStackLayout>
+
 </ContentPage>

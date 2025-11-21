@@ -5,27 +5,44 @@
              xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
              Title="PacientePage">
 
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Button Text="Cargar" Command="{Binding CargarCommand}"/>
-        <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}"/>
-        <Label Text="{Binding Estado}" TextColor="Gray"/>
+    <VerticalStackLayout Padding="20" Spacing="10"
+                         BackgroundColor="#A1E3AD">
 
-        <CollectionView ItemsSource="{Binding Mascotas}" SelectionMode="None">
+        <Button Text="Agregar paciente"
+                BackgroundColor="#54785B"
+                FontAttributes="Bold"
+                FontSize="16"
+                Command="{Binding AgregarCommand}"/>
+
+        <Button Text="Cargar" Command="{Binding CargarCommand}"
+            BackgroundColor="bLUE"
+            FontAttributes="Bold"
+            FontSize="16"
+            />
+        
+        <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}"/>
+        <Label Text="{Binding Estado}" TextColor="Black"/>
+
+        <CollectionView ItemsSource="{Binding Mascotas}" 
+                        SelectionMode="None"
+                        BackgroundColor="White">
+            
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="8" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5">
+                    <Grid Padding="8" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
                         <Label Text="{Binding Nombre}" FontAttributes="Bold" VerticalOptions="Center" />
 
                         <Button Grid.Column="1" Text="Detalle"
+                                BackgroundColor="LightGreen"
+                                FontAttributes="Bold"
+                                TextColor="Black"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SeleccionarCommand}"
                                 CommandParameter="{Binding .}"/>
 
-                        <Button Grid.Column="2" Text="Editar"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditarCommand}"
-                                CommandParameter="{Binding .}"/>
-
                         <Button Grid.Column="3" Text="Eliminar"
-                                TextColor="Red"
+                                TextColor="Black"
+                                FontAttributes="Bold"
+                                BackgroundColor="Red"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarCommand}"
                                 CommandParameter="{Binding .}"/>
                     </Grid>

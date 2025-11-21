@@ -5,32 +5,57 @@
              xmlns:vm="clr-namespace:AppParcialesMauiTrapiella.ViewsModels"
              Title="TurnoPage">
 
-    <ContentPage.BindingContext>
-        <vm:TurnosViewModel />
-    </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="20" Spacing="10">
-        <Button Text="Cargar turnos" Command="{Binding CargarCommand}"/>
+    <VerticalStackLayout Padding="20" Spacing="10"
+                         BackgroundColor="#A1E3AD">
 
-        <CollectionView ItemsSource="{Binding Turnos}" SelectionMode="None">
+        <Button Text="Agregar turno"
+            BackgroundColor="#54785B"
+            FontAttributes="Bold"
+            FontSize="16"
+            Command="{Binding AgregarCommand}" />
+
+        <Button Text="Cargar turnos" Command="{Binding CargarCommand}"
+            BackgroundColor="bLUE"
+            FontAttributes="Bold"
+            FontSize="16"/>
+
+        <CollectionView ItemsSource="{Binding Turnos}" SelectionMode="None" BackgroundColor="White">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="8" ColumnDefinitions="*,Auto">
-                        <Label>
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding Fecha, StringFormat='{0:dd/MM HH:mm}'}"/>
-                                    <Span Text=" - "/>
-                                    <Span Text="{Binding Motivo}"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Button Grid.Column="1" Text="Ver"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
-                                CommandParameter="{Binding .}"/>
+                    <Grid Padding="8" ColumnDefinitions="*,Auto,Auto, Auto"
+                          ColumnSpacing="5">
+
+                        <Label
+                             Text="{Binding Motivo}" VerticalOptions="Center"/>
+
+                        <Button Grid.Column="1" Text="Detalle"
+                            BackgroundColor="LightGreen"
+                            TextColor="Black"
+                            FontAttributes="Bold"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalleCommand}"
+                            CommandParameter="{Binding .}" />
+
+                        <Button Grid.Column="2" Text="Editar"
+                            BackgroundColor="#C4C40C"
+                            TextColor="Black"
+                            FontAttributes="Bold"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditarCommand}"
+                            CommandParameter="{Binding .}" />
+
+                        <Button Grid.Column="3" Text="Eliminar"
+                            TextColor="Black"
+                            BackgroundColor="Red"
+                            FontAttributes="Bold"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarCommand}"
+                            CommandParameter="{Binding .}" />
+
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+
     </VerticalStackLayout>
+
 </ContentPage>
