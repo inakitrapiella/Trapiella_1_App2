@@ -8,10 +8,8 @@ namespace AppParcialesMauiTrapiella.Models
 {
     public class Usuario
     {
-        public string Nombre { get; set;}       
+        public int Id { get; set; }
         public string Mail { get; set;}
         public string Contrasena { get; set;}
-        public string Numero { get; set;}
-        public string Mensaje { get; set;}
     }
 }
